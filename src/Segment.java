@@ -57,7 +57,8 @@ public class Segment implements SegmentInterface {
         }
         else
         {
-            
+            this.startPt = new Point(segCopied.startPt.x, segCopied.startPt.y);
+            this.endPt = new Point(segCopied.endPt.x, segCopied.endPt.y);
         }
     }
 
@@ -92,17 +93,32 @@ public class Segment implements SegmentInterface {
 
     public boolean isAnEndpoint(Point p)
     {
-        return p == this.startPt || p == this.endPt;
+        if (p == null)
+        {
+            throw new IllegalArgumentException("The segment being compared cannot be empty or null.");
+        }
+        if (p.x == startPt.x)
+        {
+            return (p.y == startPt.y);
+        }
+        else if (p.x == endPt.x)
+        {
+            return (p.y == endPt.y);
+        }
+        else return false;
+
     }
 
     public boolean equals(Object other)
     {
-        Segment otherSeg = (Segment)other; //Casts other to segment so they can be compared.
-        if (otherSeg == null)
+        if (other instanceof Segment)
         {
-            throw new IllegalArgumentException("This segment does not exist. Please use a valid point with values.");
+            Segment otherSeg = (Segment)other; //Casts other to segment so they can be compared.
+            if (this.startPt.equals(otherSeg.startPt) && this.endPt.equals(otherSeg.endPt)) return true;
+            else if (this.startPt.equals(otherSeg.endPt) && this.endPt.equals(otherSeg.startPt)) return true;
+            else return false;
         }
-        else return (this == otherSeg);
+        else return false;
     }
 
 
